@@ -91,7 +91,7 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 
 + Stable Diffusion(~1.8x acceleration )
 
-![sd-ddim50](.\doc\sd-ddim50.png)
+<img src=".\doc\sd-ddim50.png" alt="sd-ddim50" />
 
 <div align="center">
     <b>
@@ -100,7 +100,7 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 </div>
 
 
-![sd-dpm++20](.\doc\sd-dpm++20.png)
+<img src=".\doc\sd-dpm++20.png" alt="sd-dpm++20" />
 
 <div align="center">
     <b>
@@ -109,7 +109,7 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 </div>
 
 
-![if-demo](.\doc\if-demo.png)
+<img src=".\doc\if-demo.png" alt="if-demo" />
 
 <div align="center">
     <b>
@@ -119,7 +119,7 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 
 ### Text to Video
 
-![t2v-zero](.\doc\t2v-zero.png)
+<img src=".\doc\t2v-zero.png" alt="t2v-zero" />
 
 <div align="center">
     <b>
