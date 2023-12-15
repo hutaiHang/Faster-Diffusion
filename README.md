@@ -30,7 +30,7 @@ We propose FasterDiffusion, a training-free diffusion model acceleration scheme 
 
 Our method is not only suitable for standard text-to-image(**~1.8x acceleration for [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) and ~1.3x acceleration for [DeepFloyd-IF](https://huggingface.co/DeepFloyd/IF-I-XL-v1.0)** ) tasks but can also be applied to diverse tasks such as text-to-video(**~1.5x acceleration  on [VideoDiffusion](https://modelscope.cn/models/damo/text-to-video-synthesis/summary))**, personalized generation(**~1.8x acceleration for [DreamBooth](https://github.com/XavierXiao/Dreambooth-Stable-Diffusion) and [Custom Diffusion](https://github.com/adobe-research/custom-diffusion)**), and reference-guided generation(**~2.1x acceleration for [ControlNet](https://github.com/lllyasviel/ControlNet)**), among others. 
 
-![method](.\doc\method.png)
+<img src=".\doc\method.png" alt="method" />
 
 ​																				  <em>Method Overview. For more details, please see our paper.
   </em>
@@ -119,6 +119,13 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 
 ### Text to Video
 
+<p align="center">
+<img src="./doc/videofusion-origin-demo1.gif" alt="origin" style="width: 95%;" /><img src="./doc/videofusion-ours-demo1.gif" alt="ours" style="width: 95%;" />
+<div align="center">
+    <b>~1.5x acceleration for VideoFusion, origin video(left) and ours(right)</b>
+</div>
+</p>
+
 <img src=".\doc\t2v-zero.png" alt="t2v-zero" />
 
 <div align="center">
@@ -126,13 +133,6 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
     ~1.4x acceleration for Text2Video-Zero
 	</b>
 </div>
-
-<p align="center">
-<img src="./doc/videofusion-origin-demo1.gif" alt="origin" style="width: 40%;" /><img src="./doc/videofusion-ours-demo1.gif" alt="ours" style="width: 40%;" />
-<div align="center">
-    <b>~1.5x acceleration for VideoFusion, origin video(left) and ours(right)</b>
-</div>
-</p>
 
 ### ControlNet
 
