@@ -1,0 +1,15 @@
+accelerate==0.20.3
+diffusers==0.17.1
+matplotlib==3.8.0
+munch==4.0.0
+numpy==1.25.0
+opencv_python==4.8.0.76
+Pillow==10.0.1
+pycocoevalcap==1.2
+PyYAML==6.0.1
+scipy==1.11.3
+scikit-image
+torch==2.0.1
+torchvision==0.15.2
+tqdm==4.66.1
+transformers==4.30.2
