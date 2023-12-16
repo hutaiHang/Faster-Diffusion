@@ -1,16 +1,19 @@
-# Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models
+# 🚀 Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models
 
 <div align="center">
 <img src="./doc/demo.jpg" alt="demo" style="zoom:150%;" />
   <br>
   <em>
-      Our approach can easily be combined with various diffusion model-based tasks (such as text-to-image, personalized generation, video generation, etc.) and various sampling strategies (such as DDIM-50 steps, Dpm-solver-20 steps) to achieve training-free acceleration.
+      Our approach can easily be combined with various diffusion model-based tasks 🧠 (such as text-to-image, personalized generation, video generation, etc.) and various sampling strategies (like DDIM-50 steps, Dpm-solver-20 steps) to achieve training-free acceleration.
   </em>
 </div>
 
 <br>
 
-## TODO
+
+
+
+## 📋 TODO List
 
 - [x] Release code that combines our method with [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) ;
 - [x] Release code that combines our method with [DeepFloyd-IF](https://huggingface.co/DeepFloyd/IF-I-XL-v1.0);
@@ -18,7 +21,7 @@
 - [ ] Release code that combines our method with  [ControlNet](https://github.com/lllyasviel/ControlNet);
 - [ ] Release code that combines our method with [DreamBooth](https://github.com/XavierXiao/Dreambooth-Stable-Diffusion) and [Custom Diffusion](https://github.com/adobe-research/custom-diffusion);
 
-## Introduction
+## 📘 Introduction
 
 > **Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models**
 >
@@ -32,10 +35,13 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 
 <img src=".\doc\method.png" alt="method" />
 
-​																				  <em>Method Overview. For more details, please see our paper.
+<div align="center">
+<em>Method Overview. For more details, please see our paper.
   </em>
+</div>
 
-## Quick Start
+
+## 🔧 Quick Start
 
 - Create environment：
 
@@ -62,62 +68,73 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 <details>
 <summary>For Stable Diffusion</summary>
 
+
   ```python
-  from diffusers import StableDiffusionPipeline
-  import torch
-  from utils_sd import register_normal_pipeline, register_faster_forward, register_parallel_pipeline, seed_everything  # 1.import package
-  
-  seed_everything(2023)
-  model_id = "runwayml/stable-diffusion-v1-5"
-  pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
-  pipe = pipe.to("cuda")
-  
-  #------------------------------
-  # 2. enable parallel. If memory is limited, replace it with  `register_normal_pipeline(pipe)`
-  register_parallel_pipeline(pipe) 
-  # 3. encoder propagation
-  register_faster_forward(pipe.unet) 
-  #------------------------------
-  prompt = "a cat wearing sunglasses"
-  image = pipe.call(prompt).images[0]  
-      
-  image.save("cat.png")
+from diffusers import StableDiffusionPipeline
+import torch
+from utils_sd import register_normal_pipeline, register_faster_forward, register_parallel_pipeline, seed_everything  # 1.import package
+
+seed_everything(2023)
+model_id = "runwayml/stable-diffusion-v1-5"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+#------------------------------
+# 2. enable parallel. If memory is limited, replace it with  `register_normal_pipeline(pipe)`
+register_parallel_pipeline(pipe) 
+# 3. encoder propagation
+register_faster_forward(pipe.unet) 
+#------------------------------
+prompt = "a cat wearing sunglasses"
+image = pipe.call(prompt).images[0]  
+    
+image.save("cat.png")
   ```
+
 </details>
 
-## Qualitative results
+## ✨ Qualitative results
 
 ### Text to Image
-
-+ Stable Diffusion(~1.8x acceleration )
-
-<img src=".\doc\sd-ddim50.png" alt="sd-ddim50" />
 
 <div align="center">
     <b>
             ~1.8x acceleration for stable diffusion, 50 DDIM steps
     </b>
 </div>
+<img src=".\doc\sd-ddim50.png" alt="sd-ddim50" />
 
 
-<img src=".\doc\sd-dpm++20.png" alt="sd-dpm++20" />
 
 <div align="center">
     <b>
     ~1.8x acceleration for stable diffusion, 20 Dpm-solver++ steps
     </b>
 </div>
+<img src=".\doc\sd-dpm++20.png" alt="sd-dpm++20" />
 
 
-<img src=".\doc\if-demo.png" alt="if-demo" />
+
 
 <div align="center">
     <b>
     ~1.3x acceleration for DeepFloyd-IF
 	</b>
 </div>
+<img src=".\doc\if-demo.png" alt="if-demo" />
 
-### Text to Video
+
+
+###  Text to Video
+
+<div align="center">
+    <b>
+    ~1.4x acceleration for Text2Video-Zero
+	</b>
+</div>
+<img src=".\doc\t2v-zero.png" alt="t2v-zero" />
+
+
 
 <p align="center">
 <img src="./doc/videofusion-origin-demo1.gif" alt="origin" style="width: 95%;" /><img src="./doc/videofusion-ours-demo1.gif" alt="ours" style="width: 95%;" />
@@ -126,38 +143,32 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 </div>
 </p>
 
-<img src=".\doc\t2v-zero.png" alt="t2v-zero" />
-
-<div align="center">
-    <b>
-    ~1.4x acceleration for Text2Video-Zero
-	</b>
-</div>
 
 ### ControlNet
-
-<img src=".\doc\controlnet-demo.png" alt="controlnet-demo" style="zoom:50%;" />
 
 <div align="center">
     <b>
     ~2.1x acceleration for ControlNet
 	</b>
 </div>
+<img src=".\doc\controlnet-demo.png" alt="controlnet-demo" style="zoom:50%;" />
+
+
 
 ### Personalized Generation
-
-<img src=".\doc\personalized-demo.png" alt="personalized-demo" style="zoom:50%;" />
 
 <div align="center">
     <b>
     ~1.8x acceleration for DreamBooth and Custom Diffusion
 	</b>
 </div>
+<img src=".\doc\personalized-demo.png" alt="personalized-demo" style="zoom:50%;" />
+
+
 
 ### Other tasks based on Diffusion Model
 
 <img src=".\doc\other-task.png" alt="other-task" style="zoom: 43%;" />
-
 <div align="center">
     <b>
     Integrate our method with other tasks, such as Image Editing(<a href="https://github.com/google/prompt-to-prompt">P2P</a>) and <a href="https://github.com/ziqihuangg/ReVersion">Reversion</a>
@@ -166,8 +177,11 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
 
 
 
-## Quantitative results
+
+
+## 📈  Quantitative results
 
 <p align="center">
 <img src="./doc/rst1.png" alt="origin" style="width: 45%;margin-right: 20px;" />    <img src="./doc/rst2.png" alt="ours" style="width: 45%;" />
 </p>
+
