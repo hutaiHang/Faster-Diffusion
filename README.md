@@ -9,9 +9,9 @@
 </div>
 
 <be>
+<be>
 
 
- [Paper](https://arxiv.org/abs/2312.09608);
 
 ## 📋 TODO List
 
@@ -25,7 +25,9 @@
 
 > **Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models**
 >
-> Senmao Li\*, Taihang Hu\*, Fahad Khan, Linxuan Li, Shiqi Yang, Yaxing Wang, Ming-Ming Cheng, Jian Yang 
+> Senmao Li\*, Taihang Hu\*, Fahad Khan, Linxuan Li, Shiqi Yang, Yaxing Wang, Ming-Ming Cheng, Jian Yang
+>
+> [arXiv Paper](https://arxiv.org/abs/2312.09608);
 
 ***Denotes equal contribution.**
 
@@ -60,7 +62,14 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
   # if using `deepfloyd if`
   python if_demo.py
   ```
-
+  sd_demo.py output
+	  
+    ```python
+   Origin Pipeline: 2.369 seconds
+   Faster Diffusion: 1.407 seconds
+    ```
+  
+  All of our experiments are conducted using an A40 GPU (48GB of VRAM).
 + Usage
 
   Our method can easily integrate with the [diffusers](https://huggingface.co/docs/diffusers/index) library. Below is an example of integration with [stable-diffusion v1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5).
