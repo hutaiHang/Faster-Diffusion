@@ -194,3 +194,15 @@ image.save("cat.png")
 <img src="./doc/rst1.png" alt="origin" style="width: 45%;margin-right: 20px;" />    <img src="./doc/rst2.png" alt="ours" style="width: 45%;" />
 </p>
 
+## Citation
+
+```
+@misc{li2023faster,
+      title={Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models}, 
+      author={Senmao Li and Taihang Hu and Fahad Shahbaz Khan and Linxuan Li and Shiqi Yang and Yaxing Wang and Ming-Ming Cheng and Jian Yang},
+      year={2023},
+      eprint={2312.09608},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
