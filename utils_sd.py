@@ -1242,7 +1242,7 @@ def register_controlnet_pipeline2(pipe):
 
 
                         #----------------------save controlnet feature-------------------------
-                        #useless, shoule delete
+                        #useless, should delete
                         # setattr(self, 'downres_samples', deepcopy(down_block_res_samples))
                         # setattr(self, 'midres_sample', mid_block_res_sample.detach().clone())
                         #-----------------------save controlnet feature------------------------
