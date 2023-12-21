@@ -26,7 +26,7 @@ controlnet = ControlNetModel.from_pretrained(
 ).to('cuda')
 
 pipe = StableDiffusionControlNetPipeline.from_pretrained(
-    "/home/u2120230624/share/runwayml/stable-diffusion-v1-5", controlnet=controlnet, torch_dtype=torch.float16
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, torch_dtype=torch.float16
 ).to('cuda')
 
 print('Warm up of the gpu')
