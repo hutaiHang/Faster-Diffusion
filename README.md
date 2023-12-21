@@ -17,8 +17,8 @@
 
 - [x] Release code that combines our method with [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) ;
 - [x] Release code that combines our method with [DeepFloyd-IF](https://huggingface.co/DeepFloyd/IF-I-XL-v1.0);
+- [x] Release code that combines our method with  [ControlNet](https://github.com/lllyasviel/ControlNet)(We released the code that supports canny condition, for other conditions, you can modify code by the same way.);
 - [ ] Release code that combines our method with [Text2Video-zero](https://github.com/Picsart-AI-Research/Text2Video-Zero) and [VideoDiffusion](https://modelscope.cn/models/damo/text-to-video-synthesis/summary);
-- [ ] Release code that combines our method with  [ControlNet](https://github.com/lllyasviel/ControlNet);
 - [ ] Release code that combines our method with [DreamBooth](https://github.com/XavierXiao/Dreambooth-Stable-Diffusion) and [Custom Diffusion](https://github.com/adobe-research/custom-diffusion);
 
 ## 📘 Introduction
