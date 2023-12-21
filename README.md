@@ -68,17 +68,17 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
   sd_demo.py output
 	  
     ```python
-   Origin Pipeline: 2.369 seconds
-   Faster Diffusion: 1.407 seconds
+   Origin Pipeline: 2.524 seconds
+   Faster Diffusion: 1.476 seconds
     ```
     
   controlnet_demo.py output
 	  
     ```python
-   Origin Pipeline: 3.256 seconds
-   Faster Diffusion: 1.537 seconds
+   Origin Pipeline: 3.264 seconds
+   Faster Diffusion: 1.526 seconds
     ```  
-  All of our experiments are conducted using an A40 GPU (48GB of VRAM).
+  The above results were conducted using a 3090 GPU.
 + Usage
 
   Our method can easily integrate with the [diffusers](https://huggingface.co/docs/diffusers/index) library. Below is an example of integration with [stable-diffusion v1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5).
