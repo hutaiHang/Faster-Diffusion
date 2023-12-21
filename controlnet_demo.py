@@ -22,7 +22,7 @@ image = np.concatenate([image, image, image], axis=2)
 image_condition = Image.fromarray(image)
 
 controlnet = ControlNetModel.from_pretrained(
-    "/home/u2120230624/share/ControlNet/canny", torch_dtype=torch.float16
+    "lllyasviel/sd-controlnet-canny", torch_dtype=torch.float16
 ).to('cuda')
 
 pipe = StableDiffusionControlNetPipeline.from_pretrained(
