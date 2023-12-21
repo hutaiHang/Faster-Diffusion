@@ -1,3 +1,4 @@
+# This code uses diffusers library from https://github.com/huggingface/diffusers
 
 import imp
 import numpy as np
@@ -60,7 +61,6 @@ def get_promptls(prompt_path):
     return prompt_ls
 
 def load_512(image_path, left=0, right=0, top=0, bottom=0):
-    # print(image_path)
     if type(image_path) is str:
         image = np.array(Image.open(image_path))
         if image.ndim>3:
@@ -391,7 +391,6 @@ def register_normal_pipeline(pipe):
         return call
     pipe.call = new_call(pipe)
 
-
 def register_parallel_pipeline(pipe):
     def new_call(self):
         @torch.no_grad()
@@ -510,67 +509,62 @@ def register_parallel_pipeline(pipe):
             init_latents = latents.detach().clone()
             #-------------------------------------------------------
             all_steps = len(self.scheduler.timesteps)
-            curr_span = 1
+            span_steps = 1
             curr_step = 0
 
-            # st = time.time()
             idx = 1
             keytime = [0,1,2,3,5,10,15,25,35]
             keytime.append(all_steps)
             while curr_step<all_steps:
-                refister_time(self.unet, curr_step)
+                register_time(self.unet, curr_step)
+                time_ls = []
 
-                merge_span = curr_span
-                if merge_span>0:
-                    time_ls = []
-                    for i in range(curr_step, curr_step+merge_span):
-                        if i<all_steps:
-                            time_ls.append(self.scheduler.timesteps[i])
-                        else:
-                            break
+                for i in range(curr_step, curr_step+span_steps):
+                    if i<all_steps:
+                        time_ls.append(self.scheduler.timesteps[i])
+                    else:
+                        break
 
-                    ##--------------------------------
-                    latent_model_input = torch.cat([latents] * 2) if self.do_classifier_free_guidance else latents
+                ##--------------------------------
+                latent_model_input = torch.cat([latents] * 2) if self.do_classifier_free_guidance else latents
 
-                    # predict the noise residual
-                    noise_pred = self.unet(
-                        latent_model_input,
-                        time_ls,
-                        encoder_hidden_states=prompt_embeds,
-                        timestep_cond=timestep_cond,
-                        cross_attention_kwargs=self.cross_attention_kwargs,
-                        return_dict=False,
-                    )[0]
+                # predict the noise residual
+                noise_pred = self.unet(
+                    latent_model_input,
+                    time_ls,
+                    encoder_hidden_states=prompt_embeds,
+                    timestep_cond=timestep_cond,
+                    cross_attention_kwargs=self.cross_attention_kwargs,
+                    return_dict=False,
+                )[0]
 
-                    # perform guidance
-                    if self.do_classifier_free_guidance:
-                        noise_pred_uncond, noise_pred_text = noise_pred.chunk(2)
-                        noise_pred = noise_pred_uncond + self.guidance_scale * (noise_pred_text - noise_pred_uncond)
+                # perform guidance
+                if self.do_classifier_free_guidance:
+                    noise_pred_uncond, noise_pred_text = noise_pred.chunk(2)
+                    noise_pred = noise_pred_uncond + self.guidance_scale * (noise_pred_text - noise_pred_uncond)
 
-                    if self.do_classifier_free_guidance and self.guidance_rescale > 0.0:
-                        # Based on 3.4. in https://arxiv.org/pdf/2305.08891.pdf
-                        noise_pred = rescale_noise_cfg(noise_pred, noise_pred_text, guidance_rescale=self.guidance_rescale)
+                if self.do_classifier_free_guidance and self.guidance_rescale > 0.0:
+                    # Based on 3.4. in https://arxiv.org/pdf/2305.08891.pdf
+                    noise_pred = rescale_noise_cfg(noise_pred, noise_pred_text, guidance_rescale=self.guidance_rescale)
 
-                    # compute the previous noisy sample x_t -> x_t-1
+                # compute the previous noisy sample x_t -> x_t-1
+                bs = noise_pred.shape[0]
+                bs_perstep = bs//len(time_ls)
 
-                    step_span = len(time_ls)
-                    bs = noise_pred.shape[0]
-                    bs_perstep = bs//step_span
-
-                    denoised_latent = latents
-                    for i, timestep in enumerate(time_ls):
-                        if timestep/1000 < 0.5:
-                            denoised_latent = denoised_latent + 0.003*init_latents
-                        curr_noise = noise_pred[i*bs_perstep:(i+1)*bs_perstep]
-                        denoised_latent = self.scheduler.step(curr_noise, timestep, denoised_latent, **extra_step_kwargs, return_dict=False)[0]
-                    
-                    latents = denoised_latent
-                    ##----------------------------------------
-                curr_step += curr_span
+                denoised_latent = latents
+                for i, timestep in enumerate(time_ls):
+                    if timestep/1000 < 0.5:
+                        denoised_latent = denoised_latent + 0.003*init_latents
+                    curr_noise = noise_pred[i*bs_perstep:(i+1)*bs_perstep]
+                    denoised_latent = self.scheduler.step(curr_noise, timestep, denoised_latent, **extra_step_kwargs, return_dict=False)[0]
+                
+                latents = denoised_latent
+                ##----------------------------------------
+                curr_step += span_steps
                 idx += 1
 
                 if curr_step<all_steps:
-                    curr_span = keytime[idx] - keytime[idx-1] 
+                    span_steps = keytime[idx] - keytime[idx-1] 
 
            
             if not output_type == "latent":
@@ -740,7 +734,7 @@ def register_faster_forward(model, mod = '50ls'):
                     cond = order < 20 or order > 40 or order % 2 == 0
 
                 if cond:
-                    print(order)
+                    # print('current timestep:', order)
                     # 2. pre-process
                     sample = self.conv_in(sample)
 
@@ -804,17 +798,10 @@ def register_faster_forward(model, mod = '50ls'):
                         t_emb = t_emb.to(dtype=self.dtype)
 
                         emb = self.time_embedding(t_emb, timestep_cond)
-                        # print(emb.shape)
 
-                    # print(step, sample.shape)
                     down_block_res_samples = warpped_skip_feature(down_block_res_samples, step)
                     sample = warpped_feature(sample, step)
-                    # print(step, sample.shape)
-
                     encoder_hidden_states = warpped_text_emb(encoder_hidden_states, step)
-
-                    # print(emb.shape)
-
                     #-------------------expand feature for parallel---------------
                     
                 else:
@@ -1049,15 +1036,12 @@ def register_normal_forward(model):
     if model.__class__.__name__ == 'UNet2DConditionModel':
         model.forward = normal_forward(model)
 
-def refister_time(unet, t):
+def register_time(unet, t):
     setattr(unet, 'order', t)
 
-
-
-def register_controlnet_pipeline2(pipe):
+def register_controlnet_pipeline(pipe):
     def new_call(self):
         @torch.no_grad()
-        # @replace_example_docstring(EXAMPLE_DOC_STRING)
         def call(
             prompt: Union[str, List[str]] = None,
             image: Union[
@@ -1202,24 +1186,19 @@ def register_controlnet_pipeline2(pipe):
             curr_span = 1
             curr_step = 0
 
-            # st = time.time()
             idx = 1
-            keytime = [0,1,2,3,5,10,15,25,35,50]
-            
+            keytime = [0,1,2,3,5,10,15,25,35]
+            keytime.append(all_steps)
             while curr_step<all_steps:
-                # torch.cuda.empty_cache()
-                # print(curr_step)
-                refister_time(self.unet, curr_step)
+                register_time(self.unet, curr_step)
 
-                merge_span = curr_span
-                if merge_span>0:
+                if curr_span>0:
                     time_ls = []
-                    for i in range(curr_step, curr_step+merge_span):
+                    for i in range(curr_step, curr_step+curr_span):
                         if i<all_steps:
                             time_ls.append(self.scheduler.timesteps[i])
                         else:
                             break
-                    # torch.cuda.empty_cache()
 
                     ##--------------------------------
                     latent_model_input = torch.cat([latents] * 2) if do_classifier_free_guidance else latents
@@ -1242,7 +1221,7 @@ def register_controlnet_pipeline2(pipe):
 
 
                         #----------------------save controlnet feature-------------------------
-                        #useless, shoule delete
+                        #useless, should delete
                         # setattr(self, 'downres_samples', deepcopy(down_block_res_samples))
                         # setattr(self, 'midres_sample', mid_block_res_sample.detach().clone())
                         #-----------------------save controlnet feature------------------------
@@ -1274,6 +1253,8 @@ def register_controlnet_pipeline2(pipe):
 
                         denoised_latent = latents
                         for i, timestep in enumerate(time_ls):
+                            if timestep/1000 < 0.5:
+                                denoised_latent = denoised_latent + 0.003*self.init_latent                       
                             curr_noise = noise_pred[i*bs_perstep:(i+1)*bs_perstep]
                             denoised_latent = self.scheduler.step(curr_noise, timestep, denoised_latent, **extra_step_kwargs, return_dict=False)[0]
                         
@@ -1283,12 +1264,8 @@ def register_controlnet_pipeline2(pipe):
                 idx += 1
                 if curr_step<all_steps:
                     curr_span = keytime[idx] - keytime[idx-1]
-            
-            # for i, t in enumerate(tqdm(self.scheduler.timesteps, desc="Sampling")):
 
             #-------------------------------------------------------------
-                
-
             # If we do sequential model offloading, let's offload unet and controlnet
             # manually for max memory savings
             if hasattr(self, "final_offload_hook") and self.final_offload_hook is not None:
@@ -1384,7 +1361,7 @@ def register_t2v(model):
                 curr_step = 0
    
                 while curr_step<all_timesteps:
-                    refister_time(self.unet, curr_step)
+                    register_time(self.unet, curr_step)
 
                     time_ls = []
                     time_ls.append(timesteps[curr_step])
