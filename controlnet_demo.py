@@ -40,8 +40,8 @@ seed_everything(8888)
 start_time = time.time()
 image = pipe("Mona Lisa", image_condition).images[0]
 end_time = time.time()
-image.save('images/canny_out_origin.png')
 print("Origin Pipeline: {:.3f} seconds".format(end_time-start_time))
+image.save('images/canny_out_origin.png')
 
 register_controlnet_pipeline(pipe)
 register_faster_forward(pipe.unet)
