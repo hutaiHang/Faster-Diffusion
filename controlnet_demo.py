@@ -51,6 +51,6 @@ seed_everything(8888)
 start_time = time.time()
 image = pipe.call("Mona Lisa", image_condition).images[0]
 end_time = time.time()
-print("Origin Pipeline: {:.3f} seconds".format(end_time-start_time))
+print("Faster Pipeline: {:.3f} seconds".format(end_time-start_time))
 
 image.save('images/canny_out_faster.png')
