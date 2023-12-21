@@ -4,7 +4,7 @@ from utils_sd import register_normal_pipeline, register_faster_forward, register
 import time
 
 seed_everything(2023)
-model_id = "/home/u2120230624/share/runwayml/stable-diffusion-v1-5"
+model_id = "runwayml/stable-diffusion-v1-5"
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
 pipe = pipe.to("cuda")
 
