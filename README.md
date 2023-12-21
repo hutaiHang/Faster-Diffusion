@@ -61,6 +61,9 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
   
   # if using `deepfloyd if`
   python if_demo.py
+
+  #if using ControlNet(canny condition)
+  python controlnet_demo.py
   ```
   sd_demo.py output
 	  
@@ -68,7 +71,13 @@ Our method is not only suitable for standard text-to-image(**~1.8x acceleration 
    Origin Pipeline: 2.369 seconds
    Faster Diffusion: 1.407 seconds
     ```
-  
+    
+  controlnet_demo.py output
+	  
+    ```python
+   Origin Pipeline: 3.256 seconds
+   Faster Diffusion: 1.537 seconds
+    ```  
   All of our experiments are conducted using an A40 GPU (48GB of VRAM).
 + Usage
 
