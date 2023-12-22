@@ -25,9 +25,9 @@
 
 > **Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models**
 >
-> Senmao Li\*, Taihang Hu\*, Fahad Khan, Linxuan Li, Shiqi Yang, Yaxing Wang, Ming-Ming Cheng, Jian Yang
+> [Senmao Li](https://github.com/sen-mao)\*, [Taihang Hu](https://github.com/hutaiHang)\*, [Fahad Khan](https://sites.google.com/view/fahadkhans/home), [Linxuan Li](https://github.com/Potato-lover), [Shiqi Yang](https://www.shiqiyang.xyz/), [Yaxing Wang](https://yaxingwang.netlify.app/author/yaxing-wang/), [Ming-Ming Cheng](https://mmcheng.net/), [Jian Yang](https://scholar.google.com.hk/citations?user=6CIDtZQAAAAJ&hl=en)
 >
-> [arXiv Paper](https://arxiv.org/abs/2312.09608);
+> 📚[arXiv](https://arxiv.org/abs/2312.09608) 🌈[Project Page](https://sen-mao.github.io/FasterDiffusion/);
 
 ***Denotes equal contribution.**
 
