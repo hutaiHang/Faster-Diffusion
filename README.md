@@ -18,8 +18,8 @@
 - [x] Release code that combines our method with [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) ;
 - [x] Release code that combines our method with [DeepFloyd-IF](https://huggingface.co/DeepFloyd/IF-I-XL-v1.0);
 - [x] Release code that combines our method with  [ControlNet](https://github.com/lllyasviel/ControlNet)(We released the code that supports canny condition, for other conditions, you can modify code by the same way.);
+- [x] Release code that combines our method with customed community models, such as [Realistic Vision V6.0](https://civitai.com/models/4201/realistic-vision-v60-b1), [rev-v12](https://civitai.com/models/7371), etc. Please see [demo code](https://github.com/hutaiHang/Faster-Diffusion/blob/main/custom_demo.py)and [image](https://github.com/hutaiHang/Faster-Diffusion/blob/main/images/custom_demo.png) here.
 - [ ] Release code that combines our method with [Text2Video-zero](https://github.com/Picsart-AI-Research/Text2Video-Zero) and [VideoDiffusion](https://modelscope.cn/models/damo/text-to-video-synthesis/summary);
-- [ ] Release code that combines our method with [DreamBooth](https://github.com/XavierXiao/Dreambooth-Stable-Diffusion) and [Custom Diffusion](https://github.com/adobe-research/custom-diffusion);
 
 ## 📘 Introduction
 
@@ -99,17 +99,18 @@ pipe = pipe.to("cuda")
 
 #------------------------------
 # 2. enable parallel. If memory is limited, replace it with  `register_normal_pipeline(pipe)`
-register_parallel_pipeline(pipe) 
+register_parallel_pipeline(pipe, mod = '50ls') 
 # 3. encoder propagation
-register_faster_forward(pipe.unet) 
+register_faster_forward(pipe.unet, mod = '50ls') 
 #------------------------------
 prompt = "a cat wearing sunglasses"
 image = pipe.call(prompt).images[0]  
     
 image.save("cat.png")
   ```
-
 </details>
+
+When the hyperparameter `mod` is set to `50ls`, it means that the keytime is set to the hyperparameter mentioned in the [our paper](https://arxiv.org/abs/2312.09608). When `mod` is set to a constant, such as `4`, it means that uniformly setting the keytime at a 1:4 ratio. For the Civitai community model, we recommend setting the uniform mod to 4.
 
 ## ✨ Qualitative results
 
