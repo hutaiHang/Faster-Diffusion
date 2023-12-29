@@ -391,7 +391,7 @@ def register_normal_pipeline(pipe):
         return call
     pipe.call = new_call(pipe)
 
-def register_parallel_pipeline(pipe):
+def register_parallel_pipeline(pipe, mod = '50ls'):
     def new_call(self):
         @torch.no_grad()
         def call(
@@ -509,19 +509,21 @@ def register_parallel_pipeline(pipe):
             init_latents = latents.detach().clone()
             #-------------------------------------------------------
             all_steps = len(self.scheduler.timesteps)
-            span_steps = 1
             curr_step = 0
-
-            idx = 1
-            keytime = [0,1,2,3,5,10,15,25,35]
-            keytime.append(all_steps)
+            if mod == '50ls':
+                cond = lambda timestep: timestep in [0,1,2,3,5,10,15,25,35]
+            elif isinstance(mod, int):
+                cond = lambda timestep: timestep % mod ==0
+            else:
+                raise Exception("Currently not supported, But you can modify the code to customize the keytime")
             while curr_step<all_steps:
                 register_time(self.unet, curr_step)
-                time_ls = []
-
-                for i in range(curr_step, curr_step+span_steps):
-                    if i<all_steps:
-                        time_ls.append(self.scheduler.timesteps[i])
+                time_ls = [self.scheduler.timesteps[curr_step]]
+                curr_step += 1
+                while not cond(curr_step):
+                    if curr_step<all_steps:
+                        time_ls.append(self.scheduler.timesteps[curr_step])
+                        curr_step += 1
                     else:
                         break
 
@@ -560,11 +562,6 @@ def register_parallel_pipeline(pipe):
                 
                 latents = denoised_latent
                 ##----------------------------------------
-                curr_step += span_steps
-                idx += 1
-
-                if curr_step<all_steps:
-                    span_steps = keytime[idx] - keytime[idx-1] 
 
            
             if not output_type == "latent":
