@@ -11,14 +11,18 @@
 <be>
 <be>
 
+## 🔥Stellar Features
 
++ 🎯 Training free acceleration, plug-and-play;
++ 🎯 Supports popular text-to-image models such as stable-diffusion, deepfloyd-if, and Civitai community models like [Realistic Vision V6.0](https://civitai.com/models/4201/realistic-vision-v60-b1), [ReV Animated](https://civitai.com/models/7371), as well as ControlNet;
++ 🎯 Compatible with various schedulers and timesteps, such as DDIM (50 steps), Dpm-solver++ (20 steps), and more;
 
 ## 📋 TODO List
 
 - [x] Release code that combines our method with [Stable Diffusion](https://huggingface.co/runwayml/stable-diffusion-v1-5) ;
 - [x] Release code that combines our method with [DeepFloyd-IF](https://huggingface.co/DeepFloyd/IF-I-XL-v1.0);
 - [x] Release code that combines our method with  [ControlNet](https://github.com/lllyasviel/ControlNet)(We released the code that supports canny condition, for other conditions, you can modify code by the same way.);
-- [x] Release code that combines our method with customed community models, such as [Realistic Vision V6.0](https://civitai.com/models/4201/realistic-vision-v60-b1), [rev-v12](https://civitai.com/models/7371), etc. Please see [demo code](https://github.com/hutaiHang/Faster-Diffusion/blob/main/custom_demo.py)and [image](https://github.com/hutaiHang/Faster-Diffusion/blob/main/images/custom_demo.png) here.
+- [x] Release code that combines our method with customed community models, such as [Realistic Vision V6.0](https://civitai.com/models/4201/realistic-vision-v60-b1), [ReV Animated](https://civitai.com/models/7371), etc. Please see [demo code](https://github.com/hutaiHang/Faster-Diffusion/blob/main/custom_demo.py)and [image](https://github.com/hutaiHang/Faster-Diffusion/blob/main/images/custom_demo.png) here.
 - [ ] Release code that combines our method with [Text2Video-zero](https://github.com/Picsart-AI-Research/Text2Video-Zero) and [VideoDiffusion](https://modelscope.cn/models/damo/text-to-video-synthesis/summary);
 
 ## 📘 Introduction
