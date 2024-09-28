@@ -1,4 +1,4 @@
-# 🚀 Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models
+# 🚀 [NeurIPS 2024] Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models
 
 <div align="center">
 <img src="./doc/demo.jpg" alt="demo" style="zoom:150%;" />
