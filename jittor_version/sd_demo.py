@@ -6,9 +6,9 @@ from utils_sd import register_normal_pipeline, register_faster_forward, register
 import time
 
 seed_everything(2025)
-model_id = "/data/CompVis/stable-diffusion-v1-4"
+model_id = "runwayml/stable-diffusion-v1-5"
 pipe = StableDiffusionPipeline.from_pretrained(model_id,use_safetensors=True,)
-pipe = pipe.to("cuda:1")
+pipe = pipe.to("cuda:0")
 print(pipe.unet.dtype)
 prompt = "a cat wearing sunglasses"
 generator = jtorch.Generator().manual_seed(2025)
